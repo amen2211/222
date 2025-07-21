@@ -154,6 +154,83 @@
     <p>📸 إنستغرام: <a href="https://instagram.com/amen.allah.7_" target="_blank">@amen.allah.7_</a></p>
     <p>📘 Facebook : <a href="https://facebook.com/amen.allah.ben.ibrahim.7" target="_blank">/amen.allah.ben.ibrahim.7</a></p>
   </section>
+  <!-- Chat Floating Button + Label -->
+<div id="chat-faq-container" style="position: fixed; bottom: 20px; right: 20px; text-align: center; z-index: 1000;">
+  <div id="chat-faq-icon" style="width: 56px; height: 56px; background-color: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 12px rgba(0,0,0,0.3);">
+    <!-- SVG Icon -->
+    <svg xmlns="http://www.w3.org/2000/svg" fill="white" width="28" height="28" viewBox="0 0 24 24">
+      <path d="M2 3h20v14H6l-4 4V3zm2 2v11.17L5.17 15H20V5H4z"/>
+    </svg>
+  </div>
+  <div style="margin-top: 6px; font-size: 0.85rem; color: #d1d5db;">هل لديك سؤال؟</div>
+</div>
+
+<!-- Chat FAQ Box -->
+<div id="chat-faq-box" style="display: none; position: fixed; bottom: 90px; right: 20px; width: 280px; background-color: #1f2937; color: white; border-radius: 12px; padding: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); z-index: 1000;">
+  <h3 style="margin-top: 0; font-size: 1.1rem; color: #facc15;">❓ أسئلة شائعة</h3>
+  <div id="faq-list"></div>
+</div>
+
+<script>
+  const faqIcon = document.getElementById("chat-faq-icon");
+  const faqBox = document.getElementById("chat-faq-box");
+  const faqList = document.getElementById("faq-list");
+
+  const faqs = {
+    "من أنت؟": "أنا Amen Allah بن إبراهيم، مطور هاوي وطالب علوم إعلامية.",
+    "كم عمرك؟": "عمري 17 سنة.",
+    "ما هي اهتماماتك؟": "البرمجة، الأمن السيبراني، الذكاء الاصطناعي.",
+    "ما لغات البرمجة التي تعرفها؟": "HTML, CSS, JavaScript, Python، Arduino.",
+    "أين أعيش؟": "أعيش في تونس.",
+    "كيف أتواصل معك؟": "عبر البريد productamen@gmail.com أو واتساب."
+  };
+
+  let shown = false;
+
+  // إنشاء الأسئلة
+  for (const [question, answer] of Object.entries(faqs)) {
+    const qDiv = document.createElement("div");
+    qDiv.style.marginBottom = "10px";
+    qDiv.style.cursor = "pointer";
+    qDiv.style.padding = "8px";
+    qDiv.style.backgroundColor = "#374151";
+    qDiv.style.borderRadius = "8px";
+    qDiv.innerText = question;
+
+    const aDiv = document.createElement("div");
+    aDiv.style.marginTop = "5px";
+    aDiv.style.display = "none";
+    aDiv.style.fontSize = "0.95rem";
+    aDiv.style.color = "#d1d5db";
+    aDiv.innerText = answer;
+
+    qDiv.onclick = () => {
+      // إخفاء كل الأجوبة
+      faqList.querySelectorAll("div.answer").forEach(el => el.style.display = "none");
+      aDiv.style.display = "block";
+    };
+
+    aDiv.classList.add("answer");
+    faqList.appendChild(qDiv);
+    faqList.appendChild(aDiv);
+  }
+
+  // عند الضغط على الأيقونة
+  faqIcon.onclick = (e) => {
+    faqBox.style.display = "block";
+    shown = true;
+    e.stopPropagation(); // لمنع إغلاق النافذة فور فتحها
+  };
+
+  // إغلاق النافذة عند الضغط خارجها
+  document.addEventListener("click", function(e) {
+    if (shown && !faqBox.contains(e.target) && !faqIcon.contains(e.target)) {
+      faqBox.style.display = "none";
+      shown = false;
+    }
+  });
+</script>
+
 
   <footer>
     &copy; 2025 Amen Allah Ben Ibrahim. Tous droits réservés.
