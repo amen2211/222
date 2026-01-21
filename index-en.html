@@ -443,8 +443,29 @@ a:hover {
   <footer>
     &copy; 2025 Amen Allah Ben Ibrahim. All rights reserved.
   </footer>
+  <div id="cert-overlay">
+  <img src="" alt="Zoom Certificate">
+</div>
+<script>
+  const certImages = document.querySelectorAll(".cert-grid img");
+  const overlay = document.getElementById("cert-overlay");
+  const overlayImg = overlay.querySelector("img");
+
+  certImages.forEach(img => {
+    img.addEventListener("click", () => {
+      overlayImg.src = img.src;
+      overlay.style.display = "flex";
+    });
+  });
+
+  overlay.addEventListener("click", () => {
+    overlay.style.display = "none";
+    overlayImg.src = "";
+  });
+</script>
 </body>
 </html>
+
 
 
 
