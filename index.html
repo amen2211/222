@@ -9,26 +9,99 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:      #0a0a0a;
-      --bg2:     #111;
-      --surface: #161616;
-      --sur2:    #1e1e1e;
-      --border:  rgba(255,255,255,0.08);
-      --text:    #f2f2f2;
-      --muted:   #777;
-      --muted2:  #444;
+      --bg:      #0a0612;
+      --bg2:     #120c22;
+      --surface: #161025;
+      --sur2:    #1e1632;
+      --border:  rgba(157, 130, 255, 0.18);
+      --text:    #f2f0fb;
+      --muted:   #9a8fc4;
+      --muted2:  #5b4f8a;
       --white:   #ffffff;
       --green:   #22c55e;
+      --val-1:   #6D4BE7;
+      --val-2:   #998BE5;
+      --val-3:   #826DFF;
+      --val-glow: rgba(130, 109, 255, 0.45);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; cursor: none; }
 
     body {
       background: var(--bg);
+      background-image:
+        radial-gradient(circle at 20% 15%, rgba(109, 75, 231, 0.18) 0%, transparent 45%),
+        radial-gradient(circle at 85% 75%, rgba(130, 109, 255, 0.14) 0%, transparent 50%);
       color: var(--text);
       font-family: 'Syne', sans-serif;
       overflow-x: hidden;
+    }
+
+    /* ── VALORANT CURSOR ── */
+    .val-cursor {
+      position: fixed; width: 36px; height: 36px;
+      margin-left: -18px; margin-top: -18px;
+      border-radius: 50%;
+      border: 2px solid var(--val-3);
+      pointer-events: none; z-index: 10000;
+      transition: transform 0.18s ease, border-color 0.2s ease, background 0.2s ease;
+      transform-origin: center center;
+    }
+    .val-cursor.grow { transform: scale(1.8); background: rgba(130,109,255,0.15); }
+    @media (max-width: 900px) { .val-cursor { display: none; } html { cursor: auto; } }
+
+    /* ── VALORANT RAIN OVERLAY ── */
+    .val-rain-layer {
+      position: fixed; inset: 0; z-index: 1; overflow: hidden;
+      pointer-events: none; opacity: 0.5;
+    }
+    .val-rain {
+      position: absolute; width: 2px; height: 60px; top: -20%;
+      background: linear-gradient(to bottom, rgba(130,109,255,0) 0%, rgba(154,143,229,0.55) 100%);
+      animation: val-rain-fall linear infinite;
+    }
+    @keyframes val-rain-fall {
+      from { transform: translateY(0); opacity: 0.6; }
+      to   { transform: translateY(120vh); opacity: 0; }
+    }
+
+    /* ── VALORANT GRADIENT TITLES ── */
+    .sec-title, .hero-name, h1 {
+      background: linear-gradient(180deg, var(--val-1) 0%, var(--val-2) 90%);
+      background-clip: text; -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+    }
+    .sec-tag {
+      letter-spacing: 0.25em !important;
+      color: var(--val-3) !important;
+    }
+
+    /* ── VALORANT GLASS PANELS ── */
+    .proj-card, .form-card, .skill-card, .timeline-item, .cert-item, .testimonial-card,
+    .faq-item, .stat-box, .clink {
+      border: 1px solid var(--border) !important;
+      background: linear-gradient(180deg, rgba(109,75,231,0.10) 0%, rgba(130,109,255,0.04) 100%) !important;
+      box-shadow: 0 0 0 transparent;
+      transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+    }
+    .proj-card:hover, .form-card:hover, .skill-card:hover, .cert-item:hover,
+    .testimonial-card:hover, .clink:hover {
+      border-color: var(--val-3) !important;
+      box-shadow: 0 0 25px var(--val-glow);
+      transform: translateY(-3px);
+    }
+
+    /* ── VALORANT BUTTONS ── */
+    .nav-cta-btn, .form-submit, .hero-actions a {
+      background: linear-gradient(135deg, var(--val-1), var(--val-3)) !important;
+      color: #fff !important;
+      border: none !important;
+      box-shadow: 0 0 18px var(--val-glow);
+    }
+    .nav-cta-btn:hover, .form-submit:hover, .hero-actions a:hover {
+      box-shadow: 0 0 30px var(--val-glow);
+      transform: translateY(-2px);
     }
 
     /* grain */
@@ -1056,6 +1129,12 @@
   </div>
 </footer>
 
+<!-- VALORANT CURSOR -->
+<div class="val-cursor" id="val-cursor"></div>
+
+<!-- VALORANT RAIN -->
+<div class="val-rain-layer" id="val-rain-layer"></div>
+
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
   <a class="bn-item active" href="#hero">🏠 Accueil</a>
@@ -1195,6 +1274,36 @@
     if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&'IJC'.includes(e.key))||(e.ctrlKey&&e.key==='U'))
       e.preventDefault();
   });
+
+  // ── VALORANT CURSOR
+  const valCursor = document.getElementById('val-cursor');
+  document.addEventListener('mousemove', e => {
+    valCursor.style.left = e.clientX + 'px';
+    valCursor.style.top = e.clientY + 'px';
+  });
+  document.addEventListener('mousedown', () => valCursor.classList.add('grow'));
+  document.addEventListener('mouseup', () => valCursor.classList.remove('grow'));
+  document.querySelectorAll('a, button, .pill, .faq-q, .cert-item img').forEach(el => {
+    el.addEventListener('mouseenter', () => valCursor.classList.add('grow'));
+    el.addEventListener('mouseleave', () => valCursor.classList.remove('grow'));
+  });
+
+  // ── VALORANT RAIN GENERATOR
+  (function(){
+    const layer = document.getElementById('val-rain-layer');
+    const count = 60;
+    for (let i = 0; i < count; i++) {
+      const drop = document.createElement('i');
+      drop.className = 'val-rain';
+      const left = Math.random() * 100;
+      const duration = 4 + Math.random() * 6;
+      const delay = Math.random() * 10;
+      drop.style.left = left + '%';
+      drop.style.animationDuration = duration + 's';
+      drop.style.animationDelay = delay + 's';
+      layer.appendChild(drop);
+    }
+  })();
 </script>
 </body>
 </html>
