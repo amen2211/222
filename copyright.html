@@ -183,36 +183,41 @@
       letter-spacing: 1px;
     }
 
-    /* DMCA Badge */
-    .dmca-section {
-      margin-top: 25px;
-      display: flex;
-      justify-content: center;
-    }
-
+    /* DMCA Badge — fixed corner */
     .dmca-badge {
+      position: fixed;
+      bottom: 18px;
+      left: 18px;
+      z-index: 999;
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 20px;
-      background: #252525;
+      padding: 8px 14px;
+      background: #1C1C1C;
       border: 1px solid var(--border-color);
       border-radius: 8px;
       text-decoration: none;
-      transition: border-color 0.3s, transform 0.2s, box-shadow 0.3s;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      opacity: 0.85;
+      transition: opacity 0.3s, border-color 0.3s, transform 0.2s, box-shadow 0.3s;
     }
 
     .dmca-badge:hover {
+      opacity: 1;
       border-color: var(--primary-color);
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(218, 165, 32, 0.25);
+      box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3);
     }
 
     .dmca-badge img {
       display: block;
-      height: 28px;
+      height: 24px;
       width: auto;
       filter: grayscale(15%);
+    }
+
+    @media (max-width: 640px) {
+      .dmca-badge { bottom: 12px; left: 12px; padding: 6px 10px; }
+      .dmca-badge img { height: 20px; }
     }
   </style>
 </head>
@@ -314,14 +319,12 @@
     <div class="footer">
       &copy; 2025 amen.allah.exe – جميع الحقوق محفوظة ومُسجلة بموجب القانون.
       <div class="tag">PROTECTED LEGAL DOCUMENT</div>
-      <div class="dmca-section">
-        <a href="https://www.dmca.com/Protection/Status.aspx?ID=ad9c1922-85ab-4f72-b77d-df8e1a95dcd4" title="DMCA.com Protection Status" class="dmca-badge" target="_blank" rel="noopener">
-          <img src="https://images.dmca.com/Badges/dmca-badge-w100-2x1-01.png?ID=ad9c1922-85ab-4f72-b77d-df8e1a95dcd4" alt="DMCA.com Protection Status">
-        </a>
-        <a href="//www.dmca.com/Protection/Status.aspx?ID=ad9c1922-85ab-4f72-b77d-df8e1a95dcd4" title="DMCA.com Protection Status" class="dmca-badge"> <img src ="https://images.dmca.com/Badges/dmca_protected_sml_120m.png?ID=ad9c1922-85ab-4f72-b77d-df8e1a95dcd4"  alt="DMCA.com Protection Status" /></a>  <script src="https://images.dmca.com/Badges/DMCABadgeHelper.min.js"> </script>
-      </div>
     </div>
-  <script src="https://images.dmca.com/Badges/DMCABadgeHelper.min.js"></script>
   </div>
+
+  <a href="https://www.dmca.com/r/jm75j23" title="DMCA.com Protection Status" class="dmca-badge" target="_blank" rel="noopener">
+    <img src="https://images.dmca.com/Badges/dmca-badge-w100-2x1-01.png?ID=ad9c1922-85ab-4f72-b77d-df8e1a95dcd4" alt="DMCA.com Protection Status">
+  </a>
+  <script src="https://images.dmca.com/Badges/DMCABadgeHelper.min.js"></script>
 </body>
 </html>
